@@ -6,18 +6,24 @@ const options={
     },
     body:{}
 }
-const apiUrl='http://172.16.16.136:3000/messages/'
+// const apiUrl='http://172.16.16.136:3000/messages/'
+const apiUrl='https://szofti2chat-default-rtdb.europe-west1.firebasedatabase.app/messages.json'
 
 document.getElementById('send').addEventListener("click", sendMessage)
 const stage={}
 
 function getMessages(){
+    console.log("GetMessages")
     options.body={}
     options.method="GET"
     fetch(apiUrl).
         then((res)=>res.json()).
         then(messages=>{
-            stage.messages=messages
+            console.log(messages)
+            stage.messages=[]
+            for (const key in messages) {
+                stage.messages.push(messages[key])
+            }           
             render()
         })
 }
@@ -57,3 +63,5 @@ function sendMessage(){
 }
 
 getMessages()
+
+setInterval(getMessages, 2000)
